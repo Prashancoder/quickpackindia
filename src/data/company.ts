@@ -3,12 +3,13 @@ export const company = {
   legalName: "Krishna Traders",
   formerName: "Krishna Packers",
   established: 1991,
-  phone: "+919810000000",
-  phoneDisplay: "+91 98100 00000",
-  email: "sales@quickpackindia.com",
+  phone: "+919871002637",
+  phoneDisplay: "+91 9871002637",
+  email: "ps985094@gmail.com",
   location: "Delhi NCR, India",
-  whatsapp: "919810000000",
+  whatsapp: "919871002637",
 };
+
 
 export const businessInformation: { label: string; value: string }[] = [
   { label: "Nature of Business", value: "Manufacturers, Supplier, Trader" },
