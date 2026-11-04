@@ -22,7 +22,7 @@ export function Footer() {
 
         <nav className="text-sm" aria-label="Footer navigation">
           <h2 className="font-display text-sm font-bold tracking-wide uppercase">
-            Company
+            Quick Links
           </h2>
           <ul className="mt-4 space-y-2 opacity-85">
             <li>
@@ -37,61 +37,89 @@ export function Footer() {
             </li>
             <li>
               <Link to="/products" className="hover:text-primary">
-                Products
+                All Products
+              </Link>
+            </li>
+            <li>
+              <Link to="/custom-packaging" className="hover:text-primary">
+                Custom Box Calculator
+              </Link>
+            </li>
+            <li>
+              <Link to="/account/business" className="hover:text-primary">
+                B2B Corporate Portal
+              </Link>
+            </li>
+            <li>
+              <Link to="/blog" className="hover:text-primary">
+                Packaging News &amp; Guides
               </Link>
             </li>
             <li>
               <Link to="/contact" className="hover:text-primary">
-                Contact Us
+                Contact &amp; Factory Visit
               </Link>
             </li>
           </ul>
         </nav>
 
-        <nav className="text-sm" aria-label="Product categories">
+        <nav className="text-sm" aria-label="Legal and policies">
           <h2 className="font-display text-sm font-bold tracking-wide uppercase">
-            Products
+            Policies &amp; Legal
           </h2>
           <ul className="mt-4 space-y-2 opacity-85">
-            {categories.map((cat) => (
-              <li key={cat.id}>
-                <Link
-                  to="/products"
-                  search={{ category: cat.id }}
-                  className="hover:text-primary"
-                >
-                  {cat.name}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link to="/privacy-policy" className="hover:text-primary">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link to="/terms-and-conditions" className="hover:text-primary">
+                Terms &amp; Conditions
+              </Link>
+            </li>
+            <li>
+              <Link to="/shipping-policy" className="hover:text-primary">
+                Shipping Policy
+              </Link>
+            </li>
+            <li>
+              <Link to="/refund-cancellation-policy" className="hover:text-primary">
+                Refund &amp; Cancellation
+              </Link>
+            </li>
           </ul>
-        </nav>
 
-        <div className="text-sm">
-          <h2 className="font-display text-sm font-bold tracking-wide uppercase">
+          <h2 className="font-display text-sm font-bold tracking-wide uppercase mt-6">
             Get in touch
           </h2>
-          <ul className="mt-4 space-y-3 opacity-85">
+          <ul className="mt-3 space-y-2 opacity-85 text-xs">
             <li className="flex items-start gap-2">
-              <Phone className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+              <Phone className="mt-0.5 size-3.5 shrink-0 text-primary" aria-hidden="true" />
               <a href={`tel:${company.phone}`}>{company.phoneDisplay}</a>
             </li>
             <li className="flex items-start gap-2">
-              <Mail className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+              <Mail className="mt-0.5 size-3.5 shrink-0 text-primary" aria-hidden="true" />
               <a href={`mailto:${company.email}`}>{company.email}</a>
             </li>
             <li className="flex items-start gap-2">
-              <MapPin className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+              <MapPin className="mt-0.5 size-3.5 shrink-0 text-primary" aria-hidden="true" />
               <span>{company.location}</span>
             </li>
           </ul>
-        </div>
+        </nav>
       </div>
 
       <div className="border-t border-ink-foreground/15">
-        <div className="container-page flex flex-col gap-1 py-5 text-xs opacity-70 md:flex-row md:items-center md:justify-between">
+        <div className="container-page flex flex-col gap-2 py-5 text-xs opacity-70 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} QuickPack India. All rights reserved.</p>
-          <p>GST No. 07AZTPS9770M2Z0 · {company.legalName}</p>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link to="/privacy-policy" className="hover:underline">Privacy</Link>
+            <Link to="/terms-and-conditions" className="hover:underline">Terms</Link>
+            <Link to="/shipping-policy" className="hover:underline">Shipping</Link>
+            <Link to="/refund-cancellation-policy" className="hover:underline">Refunds</Link>
+            <span>GST No. 07AZTPS9770M2Z0 · {company.legalName}</span>
+          </div>
         </div>
       </div>
     </footer>

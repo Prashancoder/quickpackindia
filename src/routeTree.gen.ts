@@ -11,9 +11,28 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AccountRouteImport } from './routes/account'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as CartRouteImport } from './routes/cart'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CustomPackagingRouteImport } from './routes/custom-packaging'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as RefundCancellationPolicyRouteImport } from './routes/refund-cancellation-policy'
+import { Route as ShippingPolicyRouteImport } from './routes/shipping-policy'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
+import { Route as WishlistRouteImport } from './routes/wishlist'
+import { Route as AccountBusinessRouteImport } from './routes/account.business'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
+import { Route as OrdersOrderIdRouteImport } from './routes/orders.$orderId'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as ResetPasswordTokenRouteImport } from './routes/reset-password.$token'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -25,9 +44,100 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartRoute = CartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CustomPackagingRoute = CustomPackagingRouteImport.update({
+  id: '/custom-packaging',
+  path: '/custom-packaging',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundCancellationPolicyRoute =
+  RefundCancellationPolicyRouteImport.update({
+    id: '/refund-cancellation-policy',
+    path: '/refund-cancellation-policy',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ShippingPolicyRoute = ShippingPolicyRouteImport.update({
+  id: '/shipping-policy',
+  path: '/shipping-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsAndConditionsRoute = TermsAndConditionsRouteImport.update({
+  id: '/terms-and-conditions',
+  path: '/terms-and-conditions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WishlistRoute = WishlistRouteImport.update({
+  id: '/wishlist',
+  path: '/wishlist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountBusinessRoute = AccountBusinessRouteImport.update({
+  id: '/business',
+  path: '/business',
+  getParentRoute: () => AccountRoute,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesSlugRoute = CategoriesSlugRouteImport.update({
+  id: '/categories/$slug',
+  path: '/categories/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrdersOrderIdRoute = OrdersOrderIdRouteImport.update({
+  id: '/orders/$orderId',
+  path: '/orders/$orderId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsIndexRoute = ProductsIndexRouteImport.update({
@@ -40,43 +150,195 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/products/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordTokenRoute = ResetPasswordTokenRouteImport.update({
+  id: '/reset-password/$token',
+  path: '/reset-password/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRouteWithChildren
+  '/admin': typeof AdminRoute
+  '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
+  '/custom-packaging': typeof CustomPackagingRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/refund-cancellation-policy': typeof RefundCancellationPolicyRoute
+  '/shipping-policy': typeof ShippingPolicyRoute
+  '/signup': typeof SignupRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/wishlist': typeof WishlistRoute
+  '/account/business': typeof AccountBusinessRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/categories/$slug': typeof CategoriesSlugRoute
+  '/orders/$orderId': typeof OrdersOrderIdRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/reset-password/$token': typeof ResetPasswordTokenRoute
+  '/blog/': typeof BlogIndexRoute
   '/products/': typeof ProductsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRouteWithChildren
+  '/admin': typeof AdminRoute
+  '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
+  '/custom-packaging': typeof CustomPackagingRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/refund-cancellation-policy': typeof RefundCancellationPolicyRoute
+  '/shipping-policy': typeof ShippingPolicyRoute
+  '/signup': typeof SignupRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/wishlist': typeof WishlistRoute
+  '/account/business': typeof AccountBusinessRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/categories/$slug': typeof CategoriesSlugRoute
+  '/orders/$orderId': typeof OrdersOrderIdRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/reset-password/$token': typeof ResetPasswordTokenRoute
+  '/blog': typeof BlogIndexRoute
   '/products': typeof ProductsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRouteWithChildren
+  '/admin': typeof AdminRoute
+  '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
+  '/custom-packaging': typeof CustomPackagingRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/refund-cancellation-policy': typeof RefundCancellationPolicyRoute
+  '/shipping-policy': typeof ShippingPolicyRoute
+  '/signup': typeof SignupRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/wishlist': typeof WishlistRoute
+  '/account/business': typeof AccountBusinessRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/categories/$slug': typeof CategoriesSlugRoute
+  '/orders/$orderId': typeof OrdersOrderIdRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/reset-password/$token': typeof ResetPasswordTokenRoute
+  '/blog/': typeof BlogIndexRoute
   '/products/': typeof ProductsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/products/$slug' | '/products/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/account'
+    | '/admin'
+    | '/cart'
+    | '/checkout'
+    | '/contact'
+    | '/custom-packaging'
+    | '/forgot-password'
+    | '/login'
+    | '/privacy-policy'
+    | '/refund-cancellation-policy'
+    | '/shipping-policy'
+    | '/signup'
+    | '/terms-and-conditions'
+    | '/wishlist'
+    | '/account/business'
+    | '/blog/$slug'
+    | '/categories/$slug'
+    | '/orders/$orderId'
+    | '/products/$slug'
+    | '/reset-password/$token'
+    | '/blog/'
+    | '/products/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/products/$slug' | '/products'
+  to:
+    | '/'
+    | '/about'
+    | '/account'
+    | '/admin'
+    | '/cart'
+    | '/checkout'
+    | '/contact'
+    | '/custom-packaging'
+    | '/forgot-password'
+    | '/login'
+    | '/privacy-policy'
+    | '/refund-cancellation-policy'
+    | '/shipping-policy'
+    | '/signup'
+    | '/terms-and-conditions'
+    | '/wishlist'
+    | '/account/business'
+    | '/blog/$slug'
+    | '/categories/$slug'
+    | '/orders/$orderId'
+    | '/products/$slug'
+    | '/reset-password/$token'
+    | '/blog'
+    | '/products'
   id:
-    '__root__' | '/' | '/about' | '/contact' | '/products/$slug' | '/products/'
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/account'
+    | '/admin'
+    | '/cart'
+    | '/checkout'
+    | '/contact'
+    | '/custom-packaging'
+    | '/forgot-password'
+    | '/login'
+    | '/privacy-policy'
+    | '/refund-cancellation-policy'
+    | '/shipping-policy'
+    | '/signup'
+    | '/terms-and-conditions'
+    | '/wishlist'
+    | '/account/business'
+    | '/blog/$slug'
+    | '/categories/$slug'
+    | '/orders/$orderId'
+    | '/products/$slug'
+    | '/reset-password/$token'
+    | '/blog/'
+    | '/products/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AccountRoute: typeof AccountRouteWithChildren
+  AdminRoute: typeof AdminRoute
+  CartRoute: typeof CartRoute
+  CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
+  CustomPackagingRoute: typeof CustomPackagingRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LoginRoute: typeof LoginRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  RefundCancellationPolicyRoute: typeof RefundCancellationPolicyRoute
+  ShippingPolicyRoute: typeof ShippingPolicyRoute
+  SignupRoute: typeof SignupRoute
+  TermsAndConditionsRoute: typeof TermsAndConditionsRoute
+  WishlistRoute: typeof WishlistRoute
+  BlogSlugRoute: typeof BlogSlugRoute
+  CategoriesSlugRoute: typeof CategoriesSlugRoute
+  OrdersOrderIdRoute: typeof OrdersOrderIdRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
+  ResetPasswordTokenRoute: typeof ResetPasswordTokenRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
@@ -96,11 +358,137 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/custom-packaging': {
+      id: '/custom-packaging'
+      path: '/custom-packaging'
+      fullPath: '/custom-packaging'
+      preLoaderRoute: typeof CustomPackagingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-cancellation-policy': {
+      id: '/refund-cancellation-policy'
+      path: '/refund-cancellation-policy'
+      fullPath: '/refund-cancellation-policy'
+      preLoaderRoute: typeof RefundCancellationPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipping-policy': {
+      id: '/shipping-policy'
+      path: '/shipping-policy'
+      fullPath: '/shipping-policy'
+      preLoaderRoute: typeof ShippingPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-and-conditions': {
+      id: '/terms-and-conditions'
+      path: '/terms-and-conditions'
+      fullPath: '/terms-and-conditions'
+      preLoaderRoute: typeof TermsAndConditionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wishlist': {
+      id: '/wishlist'
+      path: '/wishlist'
+      fullPath: '/wishlist'
+      preLoaderRoute: typeof WishlistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/business': {
+      id: '/account/business'
+      path: '/business'
+      fullPath: '/account/business'
+      preLoaderRoute: typeof AccountBusinessRouteImport
+      parentRoute: typeof AccountRoute
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/categories/$slug': {
+      id: '/categories/$slug'
+      path: '/categories/$slug'
+      fullPath: '/categories/$slug'
+      preLoaderRoute: typeof CategoriesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orders/$orderId': {
+      id: '/orders/$orderId'
+      path: '/orders/$orderId'
+      fullPath: '/orders/$orderId'
+      preLoaderRoute: typeof OrdersOrderIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products/': {
@@ -117,14 +505,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password/$token': {
+      id: '/reset-password/$token'
+      path: '/reset-password/$token'
+      fullPath: '/reset-password/$token'
+      preLoaderRoute: typeof ResetPasswordTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface AccountRouteChildren {
+  AccountBusinessRoute: typeof AccountBusinessRoute
+}
+
+const AccountRouteChildren: AccountRouteChildren = {
+  AccountBusinessRoute: AccountBusinessRoute,
+}
+
+const AccountRouteWithChildren =
+  AccountRoute._addFileChildren(AccountRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AccountRoute: AccountRouteWithChildren,
+  AdminRoute: AdminRoute,
+  CartRoute: CartRoute,
+  CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
+  CustomPackagingRoute: CustomPackagingRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  LoginRoute: LoginRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
+  RefundCancellationPolicyRoute: RefundCancellationPolicyRoute,
+  ShippingPolicyRoute: ShippingPolicyRoute,
+  SignupRoute: SignupRoute,
+  TermsAndConditionsRoute: TermsAndConditionsRoute,
+  WishlistRoute: WishlistRoute,
+  BlogSlugRoute: BlogSlugRoute,
+  CategoriesSlugRoute: CategoriesSlugRoute,
+  OrdersOrderIdRoute: OrdersOrderIdRoute,
   ProductsSlugRoute: ProductsSlugRoute,
+  ResetPasswordTokenRoute: ResetPasswordTokenRoute,
+  BlogIndexRoute: BlogIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
 }
 export const routeTree = rootRouteImport

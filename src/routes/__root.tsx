@@ -18,6 +18,11 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { FloatingActions } from "@/components/FloatingActions";
+import { CartDrawer } from "@/components/CartDrawer";
+import { AuthModal } from "@/components/AuthModal";
+import { Toaster } from "sonner";
+import { useAuthStore } from "@/store/useAuthStore";
+
 
 function NotFoundComponent() {
   return (
@@ -230,6 +235,11 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const fetchMe = useAuthStore((state) => state.fetchMe);
+
+  useEffect(() => {
+    fetchMe();
+  }, [fetchMe]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -244,6 +254,9 @@ function RootComponent() {
         <Footer />
 
         <FloatingActions />
+        <CartDrawer />
+        <AuthModal />
+        <Toaster position="top-right" richColors closeButton />
       </div>
     </QueryClientProvider>
   );

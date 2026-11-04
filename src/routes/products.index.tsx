@@ -1,39 +1,32 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Search, X } from "lucide-react";
+import { Search, X, SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { CTASection } from "@/components/CTASection";
-import {
-  categories,
-  filters as basePills,
-  matchesFilter,
-  matchesSearch,
-  products,
-  productsByCategory,
-  type FilterId,
-  type Product,
-} from "@/data/products";
+import { api } from "@/lib/api";
+import { categories as defaultCategories } from "@/data/products";
 
 export const Route = createFileRoute("/products/")({
   validateSearch: (search: Record<string, unknown>) => ({
     category: typeof search.category === "string" ? search.category : undefined,
+    search: typeof search.search === "string" ? search.search : undefined,
+    sort: typeof search.sort === "string" ? search.sort : undefined,
   }),
   head: () => ({
     meta: [
       {
-        title:
-          "Packaging Products | Corrugated Boxes, Mailer Boxes & Mono Cartons | QuickPack India",
+        title: "All Packaging Products Catalogue | Corrugated, Mailers & Cartons | QuickPack India",
       },
       {
         name: "description",
         content:
-          "Explore QuickPack India's range of corrugated boxes, mailer boxes, mono cartons, paper bags and custom packaging solutions.",
+          "Explore QuickPack India's complete range of 3-ply & 5-ply corrugated boxes, die-cut mailer boxes, mono cartons and paper carry bags with factory direct pricing.",
       },
-      { property: "og:title", content: "Packaging Products | QuickPack India" },
+      { property: "og:title", content: "Packaging Products Catalogue | QuickPack India" },
       {
         property: "og:description",
         content:
-          "Corrugated boxes, mailer boxes, mono cartons, paper bags and custom packaging solutions from QuickPack India.",
+          "Factory-direct corrugated boxes, mailer boxes, mono cartons and paper bags.",
       },
       { property: "og:url", content: "/products" },
       { property: "og:type", content: "website" },
@@ -43,174 +36,205 @@ export const Route = createFileRoute("/products/")({
   component: ProductsPage,
 });
 
-const pills: { id: FilterId; label: string }[] = [
-  basePills[0],
-  { id: "corrugated-packing-boxes", label: "Corrugated Packing Boxes" },
-  ...basePills.slice(1),
-];
-
-function CategorySection({
-  title,
-  description,
-  items,
-  initial,
-  headingLevel = "h2",
-}: {
-  title: string;
-  description?: string;
-  items: Product[];
-  initial: number;
-  headingLevel?: "h2";
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const visible = expanded ? items : items.slice(0, initial);
-  const Heading = headingLevel;
-
-  if (items.length === 0) return null;
-
-  return (
-    <section className="mt-14">
-      <Heading className="text-xl font-bold md:text-2xl">{title}</Heading>
-      {description && (
-        <p className="mt-2 max-w-3xl text-sm text-muted-foreground">{description}</p>
-      )}
-      <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {visible.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-      {items.length > initial && (
-        <div className="mt-6 flex justify-center">
-          <button
-            type="button"
-            onClick={() => setExpanded((v) => !v)}
-            className="rounded-md border border-border bg-card px-6 py-2.5 text-sm font-semibold transition-colors hover:bg-accent"
-          >
-            {expanded ? "Show Less" : "View More"}
-          </button>
-        </div>
-      )}
-    </section>
-  );
-}
-
 function ProductsPage() {
-  const { category } = Route.useSearch();
+  const { category: queryCategory, search: querySearch, sort: querySort } = Route.useSearch();
   const navigate = useNavigate({ from: "/products" });
-  const [query, setQuery] = useState("");
 
-  const activeFilter = (category ?? "all") as FilterId;
+  const [products, setProducts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>(defaultCategories);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState(querySearch || "");
+  const [activeSort, setActiveSort] = useState(querySort || "featured");
 
-  const setFilter = (id: FilterId) =>
+  const activeCategory = queryCategory || "all";
+
+  const fetchProducts = async () => {
+    setIsLoading(true);
+    try {
+      const [prodRes, catRes] = await Promise.all([
+        api.getProducts({
+          category: activeCategory !== "all" ? activeCategory : undefined,
+          search: searchTerm.trim() || undefined,
+          sort: activeSort,
+          limit: 50,
+        }),
+        api.getCategories(),
+      ]);
+
+      if (prodRes.success && prodRes.products) {
+        setProducts(prodRes.products);
+      }
+      if (catRes.success && catRes.categories?.length > 0) {
+        setCategories(catRes.categories);
+      }
+    } catch (err) {
+      console.warn("Failed to fetch products:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [activeCategory, activeSort]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    fetchProducts();
+  };
+
+  const handleCategoryChange = (slug: string) => {
     navigate({
-      search: () => ({ category: id === "all" ? undefined : id }),
+      search: (prev) => ({
+        ...prev,
+        category: slug === "all" ? undefined : slug,
+      }),
     });
+  };
 
-  const filtered = useMemo(
-    () =>
-      products.filter(
-        (p) => matchesFilter(p, activeFilter) && matchesSearch(p, query),
-      ),
-    [activeFilter, query],
-  );
-
-  const showSections = activeFilter === "all" && query.trim() === "";
+  const handleSortChange = (newSort: string) => {
+    setActiveSort(newSort);
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        sort: newSort === "featured" ? undefined : newSort,
+      }),
+    });
+  };
 
   return (
     <div className="container-page py-10 md:py-14">
+      {/* Header */}
       <header className="max-w-3xl">
-        <p className="text-xs font-bold tracking-wider text-primary uppercase">Products</p>
-        <h1 className="mt-2 text-3xl font-extrabold md:text-4xl">
-          Explore Our Complete Packaging Range
+        <span className="text-xs font-bold tracking-wider text-primary uppercase">
+          Factory Direct Catalogue
+        </span>
+        <h1 className="mt-2 text-3xl font-extrabold md:text-4xl text-foreground">
+          Packaging Boxes &amp; Materials
         </h1>
-        <p className="mt-3 text-muted-foreground">
-          Discover reliable corrugated boxes, mailer boxes, mono cartons, paper bags and
-          other packaging solutions designed for different business needs.
+        <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+          Select from our production range of corrugated shipping cartons, premium flip-lid mailers,
+          folding mono cartons, and retail bags. Dynamic variant pricing and instant volume discounts.
         </p>
       </header>
 
-      {/* Search */}
-      <div className="relative mt-8">
-        <Search
-          className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted-foreground"
-          aria-hidden="true"
-        />
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by name or size..."
-          aria-label="Search products"
-          className="h-14 w-full rounded-xl border border-border bg-card pr-4 pl-12 text-base outline-none focus:border-primary focus:ring-2 focus:ring-ring/30"
-        />
+      {/* Search & Sort Controls */}
+      <div className="mt-8 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+        {/* Search Bar */}
+        <form onSubmit={handleSearchSubmit} className="relative flex-1">
+          <Search className="absolute top-1/2 left-4 size-4.5 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search by box size, name, ply (e.g. 4x4x1.5, 3-ply, mailer)..."
+            className="h-12 w-full rounded-xl border border-border bg-card pr-24 pl-11 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-ring/20"
+          />
+          <button
+            type="submit"
+            className="absolute top-1/2 right-2 -translate-y-1/2 rounded-lg bg-primary px-3.5 py-1.5 text-xs font-bold text-primary-foreground hover:opacity-90"
+          >
+            Search
+          </button>
+        </form>
+
+        {/* Sort dropdown */}
+        <div className="flex items-center gap-2">
+          <ArrowUpDown className="size-4 text-muted-foreground" />
+          <select
+            value={activeSort}
+            onChange={(e) => handleSortChange(e.target.value)}
+            className="h-12 rounded-xl border border-border bg-card px-4 text-sm font-semibold outline-none focus:border-primary"
+          >
+            <option value="featured">Sort: Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="popular">Most Popular</option>
+            <option value="newest">Newest Additions</option>
+          </select>
+        </div>
       </div>
 
-      {/* Filters */}
-      <div className="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:flex-wrap md:px-0">
-        {pills.map((pill) => {
-          const active = pill.id === activeFilter;
+      {/* Category Pills */}
+      <div className="no-scrollbar mt-5 -mx-4 flex gap-2 overflow-x-auto px-4 pb-2 md:mx-0 md:flex-wrap md:px-0">
+        <button
+          type="button"
+          onClick={() => handleCategoryChange("all")}
+          className={`shrink-0 rounded-full border px-4 py-2 text-xs font-bold transition-colors ${
+            activeCategory === "all"
+              ? "border-primary bg-primary text-primary-foreground shadow-xs"
+              : "border-border bg-card text-foreground hover:bg-accent"
+          }`}
+        >
+          All Products
+        </button>
+
+        {categories.map((cat) => {
+          const slug = cat.slug || cat.id;
+          const active = activeCategory === slug;
           return (
             <button
-              key={pill.id}
+              key={slug}
               type="button"
-              onClick={() => setFilter(pill.id)}
-              aria-pressed={active}
-              className={`shrink-0 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+              onClick={() => handleCategoryChange(slug)}
+              className={`shrink-0 rounded-full border px-4 py-2 text-xs font-bold transition-colors ${
                 active
-                  ? "border-primary bg-primary text-primary-foreground"
+                  ? "border-primary bg-primary text-primary-foreground shadow-xs"
                   : "border-border bg-card text-foreground hover:bg-accent"
               }`}
             >
-              {pill.label}
+              {cat.name}
             </button>
           );
         })}
       </div>
 
-      {showSections ? (
-        categories.map((cat) => (
-          <CategorySection
-            key={cat.id}
-            title={cat.name}
-            description={cat.description}
-            items={productsByCategory(cat.id)}
-            initial={cat.id === "premium-mailer-boxes" ? 4 : 8}
-          />
-        ))
-      ) : filtered.length > 0 ? (
-        <section className="mt-10">
-          <h2 className="text-xl font-bold">
-            {filtered.length} product{filtered.length === 1 ? "" : "s"} found
-          </h2>
-          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {filtered.map((product) => (
-              <ProductCard key={product.id} product={product} />
+      {/* Products Grid */}
+      <div className="mt-8">
+        {isLoading ? (
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="h-88 rounded-2xl border border-border bg-card p-4 animate-pulse"
+              />
             ))}
           </div>
-        </section>
-      ) : (
-        <div className="mt-16 rounded-xl border border-dashed border-border bg-surface p-12 text-center">
-          <h2 className="text-lg font-bold">No products found</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Try a different search term or clear your filters.
-          </p>
-          <button
-            type="button"
-            onClick={() => {
-              setQuery("");
-              setFilter("all");
-            }}
-            className="mt-5 inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
-          >
-            <X className="size-4" aria-hidden="true" />
-            Clear search & filters
-          </button>
-        </div>
-      )}
+        ) : products.length > 0 ? (
+          <div>
+            <p className="mb-4 text-xs font-semibold text-muted-foreground">
+              Showing {products.length} product{products.length === 1 ? "" : "s"}
+            </p>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {products.map((p) => (
+                <ProductCard key={p._id || p.id} product={p} />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="my-16 rounded-2xl border border-dashed border-border bg-surface p-12 text-center">
+            <h3 className="text-base font-bold text-foreground">No matching products found</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Try adjusting your search query or select another category.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSearchTerm("");
+                handleCategoryChange("all");
+              }}
+              className="mt-5 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-xs font-bold text-primary-foreground shadow-xs"
+            >
+              <X className="size-4" />
+              Clear Filters &amp; Search
+            </button>
+          </div>
+        )}
+      </div>
 
       <CTASection
-        title="Need Custom Packaging?"
-        text="Tell us what you need and our team can help you find the right packaging solution for your business."
+        title="Custom Size or Logo Printing Required?"
+        text="QuickPack India manufactures made-to-order corrugated cartons, duplex boxes and mailers to your exact CAD specs."
       />
     </div>
   );
